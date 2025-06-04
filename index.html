@@ -6,48 +6,50 @@
     <title>Document</title>
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        position: relative;
+        animation: rotate 1s linear infinite
+      }
+      .is-loading::before , .loader::after {
+        content: "";
+        box-sizing: border-box;
+        position: absolute;
+        inset: 0px;
+        border-radius: 50%;
+        border: 5px solid #FFF;
+        animation: prixClipFix 2s linear infinite ;
+      }
+      .loader::after{
+        transform: rotate3d(90, 90, 0, 180deg );
+        border-color: #FF3D00;
+      }
+
+      @keyframes rotate {
+        0%   {transform: rotate(0deg)}
+        100%   {transform: rotate(360deg)}
+      }
+
+      @keyframes prixClipFix {
+          0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+          50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+          75%, 100%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+      } 
+    </style>
     
 </head>
 <body class="h-full grid place-items-center">
     <div id="app">
-    <section>
-        <h2 class="font-bold mb-2">in progress</h2>
-        <ul>
-            <li v-for ="assignment in assignments.filter(a=> ! a.complete)" :key="assignment.id">
-                <label >
-                {{assignment.name}}
-                <input type="checkbox"  v-model="assignment.complete">
-                </label>
-            </li>
-            
-        </ul>
-    </section>
-        
-       <section v-show="assignments.filter(a=>a.complete). length">
-        <h2 class="font-bold mt-8"> completed</h2>
-        <ul>
-            <li v-for="assignment in assignments.filter(a=>a.complete)" :key="assignment.id">
-                <label>
-                    {{assignment.name}}
-                    <input type="checkbox">
-                </label>
-            </li>
-        </ul>
-       </section>
+        <app-button processing="true">submit</app-button>
     </div>
-    <script>
-        let app ={
-         data(){
-            return{
-                assignments:[
-                    {name:'Finish project', complete:false, id: 1},
-                    {name:'Read chapter 4', complete:false, id: 2},
-                    {name:'Turn in homework', complete:false, id: 3},
-                ]
-            }
-         }
-        };
-        Vue.createApp(app).mount('#app');
+
+    <script type="module">
+      import App from "./js/components/App.js";
+
+      Vue.createApp(App).mount('#app');
     </script>
 </body>
 </html>
