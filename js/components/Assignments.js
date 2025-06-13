@@ -1,4 +1,5 @@
 
+
 import AssignmentList from "./AssignmentList.js";
 export default{
     components:{AssignmentList},
@@ -16,11 +17,7 @@ export default{
     `,
     data(){
         return{
-            assignments:[
-                {name:'Finish project', complete:false, id: 1},
-                {name:'Read chapter 4', complete:false, id: 2},
-                {name:'Turn in homework', complete:false, id: 3},
-            ],
+            assignments: [],
             newAssignment:''
         }
      },
@@ -33,6 +30,16 @@ export default{
         completedAssignments(){
            return this.assignments.filter(assignment=> assignment.complete);
         }
+     },
+
+     created(){
+      fetch('http://localhost:3001/assignments')
+      .then(response => response.json())
+      
+      .then( assignments =>{
+         this.assignments = assignments;
+      });
+      
      },
      methods: {
       add(){
